@@ -65,7 +65,6 @@ crossorigin=""<img src="http://images.wikia.com/hanna-barbera/images/9/9f/Atom_A
 	
 		</script>
 
-
 		<style>
 			body {
 				height: 100%;
@@ -131,17 +130,12 @@ crossorigin=""<img src="http://images.wikia.com/hanna-barbera/images/9/9f/Atom_A
 	-->
 	</head>
 
-
-
-
 	<body>
 
 		<div id="map" class="leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0" style="position: center; outline: none;">
 		</div>
 
-
 		<script type="text/javascript">
-
 
 			<!-- From project-obj projection.py (test.bat) /tpll top-left to bottom-right (global area, not /region file)
 			<!-- However you could add more points in a matrix for better interpolation x/z MC coords to real lat/long
@@ -155,6 +149,7 @@ crossorigin=""<img src="http://images.wikia.com/hanna-barbera/images/9/9f/Atom_A
 				<!-- LEN_BOT=  304595.4856028754
 				<!-- LEN_RIGHT=211935.46540017053
 				<!-- LEN_LEFT= 209006.12154656276
+
 			function bte121_region_coords_to_real_latlng(x,z) {
 			    top_left =[ 3098732.937711787  , -5572933.950075601  ];
 				top_right=[ 3383947.8832087284 , -5484947.531326232  ];
@@ -162,30 +157,41 @@ crossorigin=""<img src="http://images.wikia.com/hanna-barbera/images/9/9f/Atom_A
 				bot_right=[ 3321268.558218175  , -5273012.065926061  ];
 				return 'test ok!';
 			}
-
-
-
 			
 			var map = L.map('map', {
 				crs: L.CRS.Simple,
-				attributionControl: true,
-				center: [10.210692, 6.053001],
-				zoom: 18,
+				attributionControl: false,
+				<!-- center: [10.210692, 6.053001], 
+				<!-- Somewhere in Utrecht. Note. tile latlng here are not geo's (tpll projection, needs other conversions... See proj-obj Python scripts for other conversions/batch conversions mc / geo)
+				center: [0.0, 0.0],
+				zoom: 1,
 				minZoom: 1,
 				tileSize: 512,
-				zoomOffset: 0,
-				maxZoom: 18,
-				zoomControl: true,
+				zoomOffset: 0, <!-- ??
+				maxZoom: 22,
+				<!--maxZoom: 22,
+				zoomControl: true
 			});
+
+			L.TileLayer.Kitten = L.tileLayer('map', {
+			  maxZoom: 22,
+			  maxNativeZoom: 18
+			}).addTo(map);
 			
 			L.TileLayer.Kitten = L.TileLayer.extend({
 				getTileUrl: function(coords) {
 					var div = 2**(18 - coords.z);
-
+					<!-- Negative coords needs ( int(-0.5) == 0, floor(-0.5) == -1 ) special treatment
+					<!-- Can be done like here with the Math.floor function
+					<!-- Or like with the Math.trunk function like with region_x & region_z in the map.on mouse click function
+					<!-- Math.trunc is like the (int) & | | int() function in c/c++, but subtracts 1 on neg. numbers...
+					<!-- The Math.trunc does NOT the same like this here... (has to do with directory structure of tiles)
+					<!-- Because of repeating x/z numbers in directories and files it needs this .extend
+					<!-- Have fun with it.
 					var mc_x; if ( coords.x >= 0 ) {	mc_x = Math.floor( coords.x/10 ); } else { mc_x = -Math.floor( -((coords.x+1)/10-1) ); }
 					var mc_y; if ( coords.y >= 0 ) {	mc_y = Math.floor( coords.y/10 ); } else { mc_y = -Math.floor( -((coords.y+1)/10-1) ); }
 					
-<!--					console.log("Coords: " + coords.toString());
+<!--				console.log("Coords: " + coords.toString());
 
 <!--				return "http://192.168.178.28/map/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".png";
 					return "http://83.83.222.154/map/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".png";
@@ -195,6 +201,7 @@ crossorigin=""<img src="http://images.wikia.com/hanna-barbera/images/9/9f/Atom_A
 					return "<a href='http://83.83.222.154/data/'>Pacman Graphics</a>"
 				}			
 			});
+
 			L.tileLayer.kitten = function() {
 				return new L.TileLayer.Kitten();
 			}
@@ -210,17 +217,22 @@ crossorigin=""<img src="http://images.wikia.com/hanna-barbera/images/9/9f/Atom_A
 				
 				var div = 2**(18 - zoom+1);
 
-				var mc_x; mc_x=((tile.x+mo.x)*div);
-				var mc_y; mc_y=((tile.y+mo.y)*div);
+				tile.x=((tile.x+mo.x)*div);
+				tile.y=((tile.y+mo.y)*div);
+
+				var r_x = (tile.x)/512;
+				var r_z = (tile.y)/512;
+
+				var region_x = Math.trunc(r_x);
+				var region_z = Math.trunc(r_z);
 				
-				tile.x = (mc_x);
-				tile.y = (mc_y);
-				var region_x = Math.trunc((tile.x)/512); if (tile.x < 0) region_x--;
-				var region_z = Math.trunc((tile.y)/512); if (tile.y < 0) region_z--;
+				<!--var region_x; if ( tile.x >= 0 ) {	region_x = Math.floor( tile.x/512 ); } else { region_x = -Math.floor( -((tile.x+1)/512-1) ); }
+				<!--var region_z; if ( tile.y >= 0 ) {	region_z = Math.floor( tile.y/512 ); } else { region_z = -Math.floor( -((tile.y+1)/512-1) ); }
 			
 				alert(
 					'x=' + tile.x + '  z=' + tile.y + '\n' +
 					'r.' + region_x + '.' + region_z + '.mca\n' +
+					'rx=' + r_x + ' rz=' + r_z + '\n' +
 					'lat=' + event.latlng.lat + ' lon=' + event.latlng.lng + '\n' +
 					'info()=' + bte121_region_coords_to_real_latlng(tile.x,tile.z) +
 					'zoom=' + zoom
@@ -264,14 +276,10 @@ crossorigin=""<img src="http://images.wikia.com/hanna-barbera/images/9/9f/Atom_A
 					'</span_bottom_right>'
 					;
 
-
 <!--					'north=' + tileBounds.getNorth() + '<br>' +
 <!--					'west='  + tileBounds.getWest()  + '<br>' +
 <!--					'      east=' + tileBounds.getEast() + '<br>' +
 <!--					'south=' + tileBounds.getSouth() + '<br>' +
-
-
-
 
 					tile.setAttribute("style", 	"font: sans-serif;" + 
 												"fontWeight: bold;" +
@@ -280,10 +288,10 @@ crossorigin=""<img src="http://images.wikia.com/hanna-barbera/images/9/9f/Atom_A
 												"text-shadow: 2px 2px 2px #000000FF, -1px -1px 2px #000000ff;" +
 												"margin: auto;"
 												);
-	<!--											"text-shadow: 0 0 2px #000;");
+<!--											"text-shadow: 0 0 2px #000;");
 												
 					tile.style.textAlign = "center";
-	<!--				tile.style.outlineStyle = "solid";
+<!--				tile.style.outlineStyle = "solid";
 					
 					tile.style.outline = '1px solid #35363a';
 					return tile;
@@ -294,9 +302,6 @@ crossorigin=""<img src="http://images.wikia.com/hanna-barbera/images/9/9f/Atom_A
 			};
 			map.addLayer( L.gridLayer.debugCoords() );
 <!--
-
-
-	
 		</script>
 	</body>
 </html>
