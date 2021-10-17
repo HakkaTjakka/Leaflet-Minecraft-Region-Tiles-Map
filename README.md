@@ -3,6 +3,12 @@ Leaflet HTML/Javascript Minecraft Region Mapper BTE121 For Browser Plus C/C++ Zo
 
 For use with: https://github.com/HakkaTjakka/REGION_FINDER
 
+***
+![clipboard_small](https://github.com/HakkaTjakka/Leaflet-Minecraft-Region-Tiles-Map/blob/main/NL/Untitled.png)
+***
+[![Demo CountPages alpha](https://github.com/HakkaTjakka/Leaflet-Minecraft-Region-Tiles-Map/blob/main/NL/Untitled.jpg)](https://www.youtube.com/embed/m01M_vSGTMw)
+(Click to play vid)
+***
   Use: region_finder.exe tiles <tiledir>
   Where <tiledir> is a directory with r.*.*.png tiles (512pxx512px) of Minecraft region files.
   Tiles can be made with the MinecraftWorldEditor program (pacman.exe from the pacman_cuberite dir)
