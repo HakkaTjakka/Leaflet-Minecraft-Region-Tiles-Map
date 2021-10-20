@@ -207,22 +207,28 @@ crossorigin=""
 <!--				console.log("Coords: " + coords.toString());
 
 
-
+<!-- Only .png
 <!--				return "http://192.168.178.28/map/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".png";
-<!--					if (coords.z<11) {
-<!--						return "http://83.83.222.154/map/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".jpg";
-<!--					} else {
-<!--						return "http://83.83.222.154/map/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".png";
-<!--					}
-<!--						return "http://83.83.222.154/cgi-bin/texture.cgi?skull.jpg";
-<!--
-					if (coords.z<11) 
-						return "http://83.83.222.154/cgi-bin/texture.cgi?" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".jpg";
-					else 
-						return "http://83.83.222.154/cgi-bin/texture.cgi?" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".png";
 
-<!-- Cross-Origin Read Blocking (CORB) blocked cross-origin response <URL> with MIME type text/html. See <URL> for more details.
-<!--						if (coords.z<=18) {
+<!-- Only .jpg lower zoom levels, last .png
+					if (coords.z<11) {
+						return "http://83.83.222.154/map/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".jpg";
+					} else {
+						return "http://83.83.222.154/map/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".png";
+					}
+
+<!--						return "http://83.83.222.154/cgi-bin/texture.cgi?skull.jpg";
+
+<!-- Through cgi-bin, needs/see https://github.com/HakkaTjakka/PROJECT-CGI-BTE121-LEAFLET
+<!--					if (coords.z<11) 
+<!--						return "http://83.83.222.154/cgi-bin/texture.cgi?" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".jpg";
+<!--					else 
+<!--						return "http://83.83.222.154/cgi-bin/texture.cgi?" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".png";
+<!--
+
+<!-- By external website, needs something with vue.config.js or so...
+<!-- (Cross-Origin Read Blocking (CORB) blocked cross-origin response <URL> with MIME type text/html. See <URL> for more details.)
+<!--						if (coords.z<11) {
 <!--							return "https://github.com/HakkaTjakka/NL_TILE_MAP/tree/main/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".jpg";
 <!--						} else {
 <!--							return "https://github.com/HakkaTjakka/NL_TILE_MAP/tree/main/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".png";
