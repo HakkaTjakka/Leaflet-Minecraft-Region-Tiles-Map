@@ -8,6 +8,8 @@ Changed the index.html
 
 Showing how to put (see def.conf in apache dir for directory settings) two different tile maps in different dirs on different harddrive into one single map, on different positions of course). The Amsterdam poster has different tile numbers than the nl poster.
 the http://83.83.222.154/nl/ positions on the Minecraft Holland map. When you zoom out to level 1, or access http://83.83.222.154/nl/amsterdam.html you can see it.
+As you can see both files (index.html and amsterdam.html) are the same except for the starting coords....
+This way you can build an endless big map where parts are divided over several directories, by checking the coords. One area points to one dir, another area points to another dir.
 
 
 Leaflet HTML/Javascript Minecraft Region Mapper BTE121 For Browser Plus C/C++ Zoom Level 2x2x512 Tilemaker
