@@ -159,14 +159,15 @@ crossorigin=""
 			var map = L.map('map', {
 				crs: L.CRS.Simple,
 				attributionControl: false,
-				center: [1306.968576, 774.784128], 
+//				center: [1306.968576, 774.784128], 
+				center: [10.226391669501, 6.1509095243], 
 //				center: [0.07977103125, 0.0472890703125], 
 				<!-- Somewhere in Utrecht. Note. tile latlng here are not geo's (tpll projection, needs other conversions... See proj-obj Python scripts for other conversions/batch conversions mc / geo)
 //				center: [0.0, 0.0],
-				zoom: 11,
+				zoom: 18,
 				minZoom: 1,
-				maxZoom: 20,
-				maxNativeZoom: 11,
+				maxZoom: 18,
+				maxNativeZoom: 18,
 				tileSize: 512,
 				zoomOffset: -7, <!-- ??
 				zoomControl: true
@@ -190,10 +191,10 @@ crossorigin=""
 //			map.addLayer( L.tileLayer.pacman() );
 
 			L.TileLayer.Kitten = L.TileLayer.extend({
-				maxZoom: 20,
-				maxNativeZoom: 11,
+				maxZoom: 18,
+				maxNativeZoom: 18,
 				getTileUrl: function(coords) {
-					var div = 2**(11 - coords.z);
+					var div = 2**(18 - coords.z);
 					<!-- Negative coords needs ( int(-0.5) == 0, floor(-0.5) == -1 ) special treatment
 					<!-- Can be done like here with the Math.floor function
 					<!-- Or like with the Math.trunk function like with region_x & region_z in the map.on mouse click function
@@ -211,10 +212,14 @@ crossorigin=""
 <!--				return "http://192.168.178.28/map/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".png";
 
 <!-- Only .jpg lower zoom levels, last .png
-					if (coords.z<11) {
-						return "http://83.83.222.154/map/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".jpg";
+					if (coords.x<1024 && coords.x>=0 && coords.y<512 && coords.y>=0) {
+						return "http://83.83.222.154/region_finder/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".jpg";
 					} else {
-						return "http://83.83.222.154/map/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".png";
+						if (coords.z<18) {
+							return "http://83.83.222.154/map/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".jpg";
+						} else {
+							return "http://83.83.222.154/map/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".png";
+						}
 					}
 
 <!--						return "http://83.83.222.154/cgi-bin/texture.cgi?skull.jpg";
@@ -256,7 +261,7 @@ crossorigin=""
 				var mo = map.getPixelOrigin();
 				var zoom=map.getZoom();
 				
-				var div = 2**(11 - zoom+1);
+				var div = 2**(18 - zoom+1);
 
 				tile.x=((tile.x+mo.x)*div);
 				tile.y=((tile.y+mo.y)*div);
@@ -285,7 +290,7 @@ crossorigin=""
 					var tile = document.createElement('div');
 					tile.className = "infotile";
 					
-					var div = 2**(11 - coords.z);
+					var div = 2**(18 - coords.z);
 
 					var mc_x; mc_x=coords.x*div;
 					var mc_y; mc_y=coords.y*div;
@@ -305,7 +310,7 @@ crossorigin=""
 						mc_x*512 + " ~ " + mc_y*512 +
 					'</span_top_left>'; 
 			
-					if (coords.z==11) tile.innerHTML = tile.innerHTML +
+					if (coords.z==18) tile.innerHTML = tile.innerHTML +
 					'<span>' +
 						mc_x + '<br>' +
 						mc_y + '<br>' +
