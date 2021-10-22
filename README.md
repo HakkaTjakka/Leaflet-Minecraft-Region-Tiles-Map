@@ -1,4 +1,9 @@
 # Leaflet-Minecraft-Region-Tiles-Map
+
+http://83.83.222.154/amsterdam/
+
+http://83.83.222.154/nl/
+
 Leaflet HTML/Javascript Minecraft Region Mapper BTE121 For Browser Plus C/C++ Zoom Level 2x2x512 Tilemaker
 
 For use with: https://github.com/HakkaTjakka/REGION_FINDER
