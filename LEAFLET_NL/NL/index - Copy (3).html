@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<!-- http://83.83.222.154/nl/ -->
+
+<html>
+	<head>
+	<link rel="stylesheet" href="./leaflet.css">
+		<link rel="stylesheet" href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.css">
+			<!--
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+				integrity="sha256-/kKa/MBRSJ8JM7ecDwZOQjuL7BuoylV0n40wYn+QFR4="
+			crossorigin=""			
+				integrity="sha256-BPfK9M5v34c2XP6p0cxVz1mUQLst0gTLk0mlc7kuodA="
+				integrity="sha256-/kKa/MBRSJ8JM7ecDwZOQjuL7BuoylV0n40wYn+QFR4="
+				integrity="sha256-04f7caf4ce6fdf87365cfea9d1cc55cf599440bb2dd204cb9349a573b92ea1d0"
+				integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+			-->
+		</link>
+	
+		<script type="text/javascript" src="./leaflet.js"></script>
+
+<!--
+		<script src="./leaflet2.js"></script>
+		<script src="./leaflet.gl.js"></script>
+		<script src="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet-src.js"></script>
+
+			integrity="sha256-JZnhVZlQItrOnx6pyGsIBWp8durEvqVpGCtFhjMGLsI="
+			integrity="sha256-uwrpbd6CZrZXkv8XWe1XgE13VOGO4qoWB4v3bFEIyH0="
+			integrity="sha256-w8tYgIGQP+8fJ/H8WFdJR/SZ5Vgd6sNVwsW+KfFbCkg="
+		
+
+-->
+
+<!--		
+integrity="sha256-qV281PHHRLgHc2Yh8xiUUYArOdLIjSu4DJKvOjuUNqk="
+crossorigin=""
+		<img src="http://images.wikia.com/hanna-barbera/images/9/9f/Atom_Ant.jpg" id="test1" />
+		<a href="#" id="test2">This is a sample link</a>
+-->
+
+		<script>
+<!--			Object.prototype.rotate = function(dd) {
+<!--				var ss = "rotate(" + dd + "deg)";
+<!--				if (this.style) { // regular DOM Object
+<!--					this.style.MozTransform = ss
+<!--					this.style.WebkitTransform = ss;
+<!--					this.style.OTransform = ss;
+<!--					this.style.transform = ss;
+<!--				} else if (this.css) { // JQuery Object
+<!--					this.css("-moz-transform", ss);
+<!--					this.css("-webkit-transform", ss);
+<!--					this.css("-0-transform", ss);
+<!--					this.css("transform", ss);
+<!--				}
+<!--				this.setAttribute("rotation", dd);
+<!--			}
+<!--			document.getElementById("test1").rotate(10);
+<!--			document.getElementById("test2").rotate(180);
+	
+		</script>
+
+		<style>
+			body {
+				height: 100%;
+				overflow:hidden;
+				padding:0px;
+				margin: 10px solid red;
+				background-color: #35363a;
+				
+			}
+			html {
+				height: 96%;
+			}
+			.stroke, .no-stroke {
+				color: white;
+				font-size: 2.5em;
+			}
+			#map {
+				width:100%;
+				height:100%;
+			}
+			.stroke {
+				text-shadow:0 0 2px red
+			}
+			.infotile {
+				display: flex;
+			}
+			.infotile span {
+				font-weight: bold;
+				margin: auto;
+				font-size: 3.5em;
+				color: #ffff6677;
+				text-shadow: -2px -2px 1px #00000088;
+				line-height: 80%;
+			}
+			.infotile span_top_left {
+				font-weight: bold;
+				position: absolute;
+				font-size: 0.7em;
+				top: 0;
+				left: 0;
+				line-height: 90%;
+			}
+			.infotile span_bottom_right {
+				font-weight: bold;
+				position: absolute;
+				bottom: 0;
+				right: 0;
+			}
+			img, a {
+				display: inline-block;
+			}
+		</style>
+
+<!-- fullscreen
+		<style>
+			html, body {
+				margin:0;
+				padding:0;
+				overflow:hidden;
+			}
+			html, body, #map {
+				width:100vw;
+				height:100vw;
+			}
+		</style>
+	-->
+	</head>
+
+	<body>
+
+		<div id="map" class="leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0" style="position: center; outline: none;">
+		</div>
+
+		<script type="text/javascript">
+
+			<!-- From project-obj projection.py (test.bat) /tpll top-left to bottom-right (global area, not /region file)
+			<!-- However you could add more points in a matrix for better interpolation x/z MC coords to real lat/long
+				<!-- TOP_LEFT(X=3098732.937711787 Z=-5572933.950075601)
+				<!-- TOP_RIGHT(X=3383947.8832087284 Z=-5484947.531326232)
+				<!-- BOT_LEFT(X=3030557.8188913134 Z=-5363927.8285290385)
+				<!-- BOT_RIGHT(X=3321268.558218175 Z=-5273012.065926061)
+				<!-- SURFACE=242098.57115845263 REGION FILES
+				<!-- SURFACE=63464.687837761405 SQUARE KILOMETERS
+				<!-- LEN_TOP=  298478.09805605956
+				<!-- LEN_BOT=  304595.4856028754
+				<!-- LEN_RIGHT=211935.46540017053
+				<!-- LEN_LEFT= 209006.12154656276
+
+			function bte121_region_coords_to_real_latlng(x,z) {
+			    top_left =[ 3098732.937711787  , -5572933.950075601  ];
+				top_right=[ 3383947.8832087284 , -5484947.531326232  ];
+				bot_left =[ 3030557.8188913134 , -5363927.8285290385 ];
+				bot_right=[ 3321268.558218175  , -5273012.065926061  ];
+				return 'test ok!';
+			}
+			
+			var map = L.map('map', {
+				crs: L.CRS.Simple,
+				attributionControl: false,
+				center: [1306.968576, 774.784128], 
+//				center: [0.07977103125, 0.0472890703125], 
+				<!-- Somewhere in Utrecht. Note. tile latlng here are not geo's (tpll projection, needs other conversions... See proj-obj Python scripts for other conversions/batch conversions mc / geo)
+//				center: [0.0, 0.0],
+				zoom: 11,
+				minZoom: 1,
+				maxZoom: 20,
+				maxNativeZoom: 11,
+				tileSize: 512,
+				zoomOffset: -7, <!-- ??
+				zoomControl: true
+			});
+
+//			L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map);
+//			L.tileLayer('map').addTo(map);
+
+//var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//	maxZoom: 19,
+//	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+//});
+
+//			L.TileLayer.Pacman = L.TileLayer({
+//				maxZoom: 20,
+//				maxNativeZoom: 18
+//			});
+//			L.tileLayer.pacman = function() {
+//				return new L.TileLayer.Pacman();
+//			}
+//			map.addLayer( L.tileLayer.pacman() );
+
+			L.TileLayer.Kitten = L.TileLayer.extend({
+				maxZoom: 20,
+				maxNativeZoom: 11,
+				getTileUrl: function(coords) {
+					var div = 2**(11 - coords.z);
+					<!-- Negative coords needs ( int(-0.5) == 0, floor(-0.5) == -1 ) special treatment
+					<!-- Can be done like here with the Math.floor function
+					<!-- Or like with the Math.trunk function like with region_x & region_z in the map.on mouse click function
+					<!-- Math.trunc is like the (int) & | | int() function in c/c++, but subtracts 1 on neg. numbers...
+					<!-- The Math.trunc does NOT the same like this here... (has to do with directory structure of tiles)
+					<!-- Because of repeating x/z numbers in directories and files it needs this .extend
+					<!-- Have fun with it.
+					var mc_x; if ( coords.x >= 0 ) {	mc_x = Math.floor( coords.x/10 ); } else { mc_x = -Math.floor( -((coords.x+1)/10-1) ); }
+					var mc_y; if ( coords.y >= 0 ) {	mc_y = Math.floor( coords.y/10 ); } else { mc_y = -Math.floor( -((coords.y+1)/10-1) ); }
+					
+<!--				console.log("Coords: " + coords.toString());
+
+
+
+<!--				return "http://192.168.178.28/map/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".png";
+<!--					if (coords.z<11) {
+<!--						return "http://83.83.222.154/map/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".jpg";
+<!--					} else {
+<!--						return "http://83.83.222.154/map/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".png";
+<!--					}
+<!--						return "http://83.83.222.154/cgi-bin/texture.cgi?skull.jpg";
+<!--
+					if (coords.z<11) 
+						return "http://83.83.222.154/cgi-bin/texture.cgi?" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".jpg";
+					else 
+						return "http://83.83.222.154/cgi-bin/texture.cgi?" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".png";
+
+<!-- Cross-Origin Read Blocking (CORB) blocked cross-origin response <URL> with MIME type text/html. See <URL> for more details.
+<!--						if (coords.z<=18) {
+<!--							return "https://github.com/HakkaTjakka/NL_TILE_MAP/tree/main/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".jpg";
+<!--						} else {
+<!--							return "https://github.com/HakkaTjakka/NL_TILE_MAP/tree/main/" + coords.z + "/" + mc_x + "/" + mc_y + "/r." + coords.x + "." + coords.y + ".png";
+<!--						}
+							
+
+
+<!--					}
+				},
+				getAttribution: function() {
+<!--				return "<a href='http://192.168.178.28/nl/'>Pacman Graphics</a>"
+					return "<a href='http://83.83.222.154/data/'>Pacman Graphics</a>"
+				}
+			});
+			L.tileLayer.kitten = function() {
+				return new L.TileLayer.Kitten();
+			}
+			map.addLayer( L.tileLayer.kitten() );
+<!--
+			map.on("contextmenu", function (event) {
+				console.log("user right-clicked on map coordinates: " + event.latlng.toString());
+				L.marker(event.latlng).addTo(map);
+
+				var tile = map.latLngToLayerPoint(event.latlng);
+				var mo = map.getPixelOrigin();
+				var zoom=map.getZoom();
+				
+				var div = 2**(11 - zoom+1);
+
+				tile.x=((tile.x+mo.x)*div);
+				tile.y=((tile.y+mo.y)*div);
+
+				var r_x = (tile.x)/512;
+				var r_z = (tile.y)/512;
+
+				var region_x = Math.trunc(r_x);
+				var region_z = Math.trunc(r_z);
+				
+				<!--var region_x; if ( tile.x >= 0 ) {	region_x = Math.floor( tile.x/512 ); } else { region_x = -Math.floor( -((tile.x+1)/512-1) ); }
+				<!--var region_z; if ( tile.y >= 0 ) {	region_z = Math.floor( tile.y/512 ); } else { region_z = -Math.floor( -((tile.y+1)/512-1) ); }
+			
+				alert(
+					'x=' + tile.x + '  z=' + tile.y + '\n' +
+					'r.' + region_x + '.' + region_z + '.mca\n' +
+					'rx=' + r_x + ' rz=' + r_z + '\n' +
+					'lat=' + event.latlng.lat + ' lon=' + event.latlng.lng + '\n' +
+					'info()=' + bte121_region_coords_to_real_latlng(tile.x,tile.z) +
+					'zoom=' + zoom
+					);
+			});			
+<!--
+			L.GridLayer.DebugCoords = L.GridLayer.extend({
+				createTile: function (coords) {
+					var tile = document.createElement('div');
+					tile.className = "infotile";
+					
+					var div = 2**(11 - coords.z);
+
+					var mc_x; mc_x=coords.x*div;
+					var mc_y; mc_y=coords.y*div;
+			
+				
+	<!--				tile.innerHTML = region;
+<!--					tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
+	<!--					'<br>'+
+		<!--				'lat:'+ center.lat+' '+'lng:'+center.lng+
+
+					var tileBounds = this._tileCoordsToBounds(coords);
+	<!--				var center = tileBounds.getCenter();
+
+					tile.innerHTML = 
+					'<span_top_left>' +
+						'R.' + mc_x + '.' + mc_y + '.MCA' + '<br>' +	
+						mc_x*512 + " ~ " + mc_y*512 +
+					'</span_top_left>'; 
+			
+					if (coords.z==11) tile.innerHTML = tile.innerHTML +
+					'<span>' +
+						mc_x + '<br>' +
+						mc_y + '<br>' +
+					'</span>';
+
+					tile.innerHTML = tile.innerHTML +
+					'<span_bottom_right>' +
+						'zoom=' + coords.z +
+					'</span_bottom_right>'
+					;
+
+<!--					'north=' + tileBounds.getNorth() + '<br>' +
+<!--					'west='  + tileBounds.getWest()  + '<br>' +
+<!--					'      east=' + tileBounds.getEast() + '<br>' +
+<!--					'south=' + tileBounds.getSouth() + '<br>' +
+
+					tile.setAttribute("style", 	"font: sans-serif;" + 
+												"fontWeight: bold;" +
+												"color: #ffffff99;" + 
+												"font-size: 1.5em;" + 
+												"text-shadow: 2px 2px 2px #000000FF, -1px -1px 2px #000000ff;" +
+												"margin: auto;"
+												);
+<!--											"text-shadow: 0 0 2px #000;");
+												
+					tile.style.textAlign = "center";
+<!--				tile.style.outlineStyle = "solid";
+					
+					tile.style.outline = '1px solid #35363a';
+					return tile;
+				}
+			});
+			L.gridLayer.debugCoords = function(opts) {
+				return new L.GridLayer.DebugCoords(opts);
+			};
+			map.addLayer( L.gridLayer.debugCoords() );
+<!--
+		</script>
+	</body>
+</html>
