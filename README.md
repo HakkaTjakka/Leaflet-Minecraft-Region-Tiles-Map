@@ -4,6 +4,8 @@ http://83.83.222.154/amsterdam/
 
 http://83.83.222.154/nl/
 
+Tiles at: https://github.com/HakkaTjakka/NL_TILE_MAP
+
 Changed the index.html
 
 Showing how to put (see def.conf in apache dir for directory settings) two different tile maps in different dirs on different harddrive into one single map, on different positions of course). The Amsterdam poster has different tile numbers than the nl poster.
