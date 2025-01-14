@@ -1,12 +1,15 @@
 # Leaflet-Minecraft-Region-Tiles-Map
 
 http://84.104.196.249/amsterdam/
+
 http://84.104.196.249/Storage/posters/
+
 Local ftpserver: ftp://84.104.196.249/posters
 
 Tiles at: https://github.com/HakkaTjakka/NL_TILE_MAP (REPO DELETED BY GITHUB)
 
 Local webserver: http://84.104.196.249/nl/
+
 Local ftpserver: ftp://84.104.196.249/posters/NL_TILE_MAP
 
 Changed the index.html
